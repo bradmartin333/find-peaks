@@ -101,7 +101,6 @@ void PeakFinder::findPeaks(std::vector<float> x0, std::vector<int> &peakInds, bo
 		ind.insert(ind.end(), len0);
 		minMagIdx = distance(x.begin(), std::min_element(x.begin(), x.end()));
 		minMag = x[minMagIdx];
-		// std::cout<<"Hola"<<std::endl;
 		leftMin = minMag;
 	}
 	else
@@ -127,9 +126,9 @@ void PeakFinder::findPeaks(std::vector<float> x0, std::vector<int> &peakInds, bo
 		{
 			// Deal with first point a little differently since tacked it on
 			// Calculate the sign of the derivative since we tacked the first
-			//  point on it does not neccessarily alternate like the rest.
-			std::vector<float> xSub0(x.begin(), x.begin() + 3); // tener cuidado subvector
-			std::vector<float> xDiff;							// tener cuidado subvector
+			// point on it does not necessarily alternate like the rest.
+			std::vector<float> xSub0(x.begin(), x.begin() + 3);
+			std::vector<float> xDiff;
 			diff(xSub0, xDiff);
 
 			std::vector<int> signDx;
