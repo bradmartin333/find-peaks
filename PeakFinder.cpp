@@ -69,7 +69,7 @@ void PeakFinder::findPeaks(std::vector<float> x0, std::vector<int> &peakInds, bo
 	int minIdx = distance(x0.begin(), min_element(x0.begin(), x0.end()));
 	int maxIdx = distance(x0.begin(), max_element(x0.begin(), x0.end()));
 
-	float sel = (x0[maxIdx] - x0[minIdx]) / 4.0;
+	float sel = (x0[maxIdx] - x0[minIdx]) / 4.0f;
 	int len0 = x0.size();
 
 	scalarProduct(extrema, x0, x0);
@@ -161,7 +161,7 @@ void PeakFinder::findPeaks(std::vector<float> x0, std::vector<int> &peakInds, bo
 			ii = 1;
 
 		// Preallocate max number of maxima
-		float maxPeaks = ceil((float)len / 2.0);
+		int maxPeaks = (int)ceil((float)len / 2.0f);
 		std::vector<int> peakLoc(maxPeaks, 0);
 		std::vector<float> peakMag(maxPeaks, 0.0);
 		int cInd = 1;
@@ -180,7 +180,6 @@ void PeakFinder::findPeaks(std::vector<float> x0, std::vector<int> &peakInds, bo
 
 			// Found new peak that was lager than temp mag and selectivity larger
 			// than the minimum to its left.
-
 			if (x[ii - 1] > tempMag && x[ii - 1] > leftMin + sel)
 			{
 				tempLoc = ii - 1;
@@ -224,17 +223,13 @@ void PeakFinder::findPeaks(std::vector<float> x0, std::vector<int> &peakInds, bo
 		}
 		else if (!foundPeak)
 		{
+
 			float minAux = x0[x0.size() - 1] < x[x.size() - 1] ? x0[x0.size() - 1] : x[x.size() - 1];
+			float endpoint = minAux + sel;
 			if (x[x.size() - 1] > tempMag && x[x.size() - 1] > leftMin + sel)
 			{
 				peakLoc[cInd - 1] = len - 1;
 				peakMag[cInd - 1] = x[x.size() - 1];
-				cInd = cInd + 1;
-			}
-			else if (!tempMag > minAux + sel) // Check if we still need to add the last point
-			{
-				peakLoc[cInd - 1] = tempLoc;
-				peakMag[cInd - 1] = tempMag;
 				cInd = cInd + 1;
 			}
 		}
