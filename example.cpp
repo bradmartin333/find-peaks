@@ -3,10 +3,11 @@
 #include <sstream>
 #include <vector>
 #include <stdexcept>
+#include <algorithm>
 
 #include "PeakFinder.h"
 
-std::vector<std::vector<float>> read_data_from_file(const std::string &filepath)
+std::vector<std::vector<float>> read_data_from_file(const std::string &filepath, int &num_channels)
 {
   std::ifstream file(filepath);
   if (!file.is_open())
@@ -16,7 +17,6 @@ std::vector<std::vector<float>> read_data_from_file(const std::string &filepath)
   }
 
   std::string line;
-  int num_channels = 0;
 
   while (std::getline(file, line))
   {
@@ -65,26 +65,33 @@ std::vector<std::vector<float>> read_data_from_file(const std::string &filepath)
 
 int main()
 {
-  auto data = read_data_from_file("../data/EEG Eye State.txt");
+  int num_channels = 0;
+  auto data = read_data_from_file("../data/EEG Eye State.txt", num_channels);
 
-  for (const std::vector<float> &row : data)
+  std::vector<int> eeg_peaks;
+
+  for (int i = 0; i < num_channels; i++)
   {
+    std::vector<float> row = data[i];
     std::vector<int> out;
 
     PeakFinder::findPeaks(row, out, false);
 
-    if (out.size() == 0)
+    if (i == num_channels - 1)
     {
-      std::cout << "No peaks" << std::endl;
-      continue;
+      std::sort(eeg_peaks.begin(), eeg_peaks.end());
+      std::vector<int>::iterator individual_peaks;
+      individual_peaks = std::unique(eeg_peaks.begin(), eeg_peaks.end());
+      eeg_peaks.resize(std::distance(eeg_peaks.begin(), individual_peaks));
+      for (std::vector<int>::iterator it = eeg_peaks.begin(); it != eeg_peaks.end(); ++it)
+        std::cout << *it << ' ';
+      std::cout << out.size();
     }
-
-    std::cout << "Maxima found:" << std::endl;
-
-    for (size_t i = 0; i < out.size(); ++i)
-      std::cout << row[out[i]] << " ";
-
-    std::cout << std::endl;
+    else
+    {
+      for (size_t i = 0; i < out.size(); ++i)
+        eeg_peaks.push_back(out[i]);
+    }
   }
 
   return 0;

@@ -246,8 +246,4 @@ void PeakFinder::findPeaks(std::vector<float> x0, std::vector<int> &peakInds, bo
 			selectElementsFromIndices(ind, peakLocTmp, peakInds);
 		}
 	}
-	// else
-	//{
-	// input signal length <= 2
-	//}
 }
