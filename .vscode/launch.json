@@ -8,10 +8,10 @@
             "name": "Debug Windows",
             "type": "cppvsdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/Debug/example.exe",
+            "program": "example.exe",
             "args": [],
             "stopAtEntry": false,
-            "cwd": "${fileDirname}",
+            "cwd": "${workspaceFolder}/build/Debug/",
             "environment": [],
             "console": "integratedTerminal"
         },
@@ -19,10 +19,10 @@
             "name": "Release Windows",
             "type": "cppvsdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/Release/example.exe",
+            "program": "example.exe",
             "args": [],
             "stopAtEntry": false,
-            "cwd": "${fileDirname}",
+            "cwd": "${workspaceFolder}/build/Release/",
             "environment": [],
             "console": "integratedTerminal"
         }
